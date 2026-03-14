@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "my-index-menu": "/components/index_menu/index_menu",
+    "my-rotation-chart": "/components/rotation_chart/rotation_chart"
+  
+  }
+}

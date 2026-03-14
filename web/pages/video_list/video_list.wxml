@@ -1,0 +1,92 @@
+<view class="pages-main">
+    <view class="top-search">
+        <view class="search-form">
+            <view class="form-item" wx:if="{{level == 10}}">
+                <view class="form-label">账号:</view>
+                <input class="form-input" placeholder="搜索账号" value="{{form.username}}" bindinput="onUsernameInput" />
+            </view>
+
+            <view class="form-item">
+                <view class="form-label">文件名:</view>
+                <input class="form-input" placeholder="搜索文件名" value="{{form.file_name}}" bindinput="onFileNameInput" />
+            </view>
+
+            <view class="form-item">
+                <view class="form-label">上传时间:</view>
+                <picker mode="date" value="{{form.created_at_start}}" start="2000-01-01" bindchange="onStartDateChange">
+                    <view class="date-picker">{{form.created_at_start || '开始日期'}}</view>
+                </picker>
+                <text class="date-separator">至</text>
+                <picker mode="date" value="{{form.created_at_end}}" start="2000-01-01" bindchange="onEndDateChange">
+                    <view class="date-picker">{{form.created_at_end || '结束日期'}}</view>
+                </picker>
+            </view>
+
+            <view class="form-item">
+                <button class="search-btn" bindtap="onSearch">搜索</button>
+            </view>
+        </view>
+    </view>
+
+    <view class="card-list">
+        <checkbox-group bindchange="onSelectionChange">
+
+            <view class="data-card" wx:for="{{dataList}}" wx:key="id" data-item="{{item}}">
+                <view class="card-header">
+                    <view class="card-title">
+                        <text class="filename">{{item.file_name}}</text>
+                        <text class="username" wx:if="{{level == 10}}">({{item.username}})</text>
+                    </view>
+                </view>
+
+                <view class="card-content">
+                    <view class="card-row">
+                        <text class="label">检测结果:</text>
+                        <text class="value status-{{item.item === '完成' ? 'success' : item.item === '处理中' ? 'processing' : 'default'}}">{{item.item || '暂无'}}</text>
+                    </view>
+
+                    <view class="video-comparison">
+                        <view class="video-item">
+                            <text class="video-label">原视频</text>
+                            <video wx:if="{{item.mid_raw}}" src="{{videoLinkGet + item.mid_raw}}" class="card-video" controls="{{false}}" mode="aspectFill" data-mid="{{item.mid_raw}}" />
+                            <view wx:else class="video-placeholder">无视频</view>
+                        </view>
+
+                        <view class="video-item">
+                            <text class="video-label">检测视频</text>
+                            <video wx:if="{{item.mid_handle}}" src="{{videoLinkGet + item.mid_handle}}" class="card-video" controls="{{false}}" mode="aspectFill" data-mid="{{item.mid_handle}}" />
+                            <view wx:else class="video-placeholder">无视频</view>
+                        </view>
+                    </view>
+
+                    <view class="card-row">
+                        <text class="label">上传时间:</text>
+                        <text class="value">{{item.CreatedAt}}</text>
+                    </view>
+                </view>
+
+                <view class="card-actions">
+                    <button class="action-btn detection-btn" bindtap="onDetection" data-item="{{item}}">
+                        <text class="btn-icon">⚙️</text>
+                        重新检测
+                    </button>
+                    <button class="action-btn delete-btn" bindtap="onDelete" data-item="{{item}}">
+                        <text class="btn-icon">🗑️</text>
+                        删除
+                    </button>
+                </view>
+            </view>
+        </checkbox-group>
+
+        <view wx:if="{{dataList.length === 0}}" class="empty-state">
+            <text class="empty-text">暂无数据</text>
+        </view>
+    </view>
+
+    <view class="pagination">
+        <view class="pagination-controls">
+            <button class="pagination-btn" disabled="{{form.page <= 1}}" bindtap="prevPage">上一页</button>
+            <button class="pagination-btn" bindtap="nextPage">下一页</button>
+        </view>
+    </view>
+</view>

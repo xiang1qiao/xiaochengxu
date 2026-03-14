@@ -1,0 +1,51 @@
+<!--pages/img_detection/img_detection.wxml-->
+<view class="detection-main">
+
+    <view class="img-div">
+        <view class="img-show-div">
+            <image wx:if="{{form.mid_raw}}" src="{{imgLinkGet + form.mid_raw}}" mode="aspectFit" class="img-show-css" bindtap="imgShowOpen" data-img="{{form.mid_raw}}" />
+            <view wx:else class="placeholder">请上传图片</view>
+        </view>
+
+        <view class="up-img">
+            <button bindtap="chooseImage" type="default" size="mini">上传图片</button>
+        </view>
+    </view>
+
+
+    <view class="center-area">
+        <button bindtap="detection" type="primary" size="mini" loading="{{isDetecting}}">进行检测</button>
+
+        <scroll-view scroll-y class="result-container" wx:if="{{form.nameDic.length  != 0}}">
+            <block wx:for="{{form.nameDic}}" wx:for-item="item" wx:for-index="index" wx:key="index">
+                <view class="result-item">
+                    <text>类型: {{item["类别"]}}</text> <text>置信度: {{item["置信度"]}}%</text>
+                    <text>目标位置:</text>
+                    <view class="coordinate">
+                        <text>x1:{{item['坐标']['x1']}} y1:{{item['坐标']['y1']}}</text>
+                        <text>x2:{{item['坐标']['x2']}} y2:{{item['坐标']['y2']}}</text>
+                    </view>
+                </view>
+            </block>
+        </scroll-view>
+
+        <view class="ai-suggestion" wx:if="{{form.suggestion}}">
+            <view class="ai-suggestion-title">AI建议</view>
+            <view class="ai-suggestion-content">{{form.suggestion}}</view>
+        </view>
+    </view>
+
+
+    <view class="img-div">
+        <view class="img-show-div">
+            <image wx:if="{{form.mid_handle}}" src="{{imgLinkGet + form.mid_handle}}" mode="aspectFit" class="img-show-css" bindtap="imgShowOpen" data-img="{{form.mid_handle}}" />
+            <view wx:else class="placeholder">检测后显示结果</view>
+        </view>
+
+        <view class="up-img">
+            <button bindtap="saveImageToPhotosAlbum" type="default" size="mini" disabled="{{!form.mid_handle}}">保存到本地</button>
+        </view>
+    </view>
+
+
+</view>

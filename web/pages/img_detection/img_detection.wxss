@@ -1,0 +1,152 @@
+/* pages/img_detection/img_detection.wxss */
+
+.detection-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20rpx;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+}
+
+
+.img-div {
+    width: 90%;
+    margin: 20rpx 0;
+    padding: 30rpx;
+    background: white;
+    border-radius: 16rpx;
+    box-shadow: 0 10rpx 20rpx rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.img-show-div {
+    height: 300rpx;
+    width: 300rpx;
+    border: 2rpx solid #e0e0e0;
+    border-radius: 12rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+    overflow: hidden;
+    margin-bottom: 20rpx;
+}
+
+.placeholder {
+    color: #999;
+    font-size: 28rpx;
+}
+
+.img-show-css {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+
+.up-img {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+
+.center-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20rpx 0;
+}
+
+
+.result-container {
+    max-height: 300rpx;
+    width: 90%;
+    margin-top: 20rpx;
+     border: 2rpx solid #eee;
+    border-radius: 12rpx; 
+    padding: 15rpx; 
+    background-color: white;
+}
+
+
+.result-item {
+    margin-bottom: 30rpx;
+    padding-bottom: 15rpx;
+    border-bottom: 1rpx dashed #eee;
+}
+
+.result-item text {
+    display: block;
+    font-size: 26rpx;
+    margin-bottom: 8rpx;
+}
+
+.coordinate {
+    margin-top: 10rpx;
+    font-size: 24rpx;
+    color: #666;
+}
+
+
+.preview-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.preview-image {
+    width: 90%;
+    height: 70vh;
+}
+
+
+button {
+    border-radius: 8rpx;
+    font-size: 28rpx;
+    padding: 0 30rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+}
+
+button[type=primary] {
+    background-color: #1a2980;
+}
+
+button[disabled] {
+    opacity: 0.6;
+}
+
+.ai-suggestion {
+    width: 90%;
+    margin-top: 20rpx;
+    padding: 20rpx;
+    background-color: #e8f5e8;
+    border-radius: 12rpx;
+    border-left: 4rpx solid #4CAF50;
+}
+
+.ai-suggestion-title {
+    font-size: 30rpx;
+    font-weight: bold;
+    color: #388E3C;
+    margin-bottom: 15rpx;
+}
+
+.ai-suggestion-content {
+    font-size: 26rpx;
+    line-height: 1.5;
+    color: #333;
+    white-space: pre-wrap;
+}

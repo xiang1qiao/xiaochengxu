@@ -1,0 +1,66 @@
+<view class="form-main">
+  <form bindsubmit="submitForm">
+    <view class="form-item required">
+      <view class="form-label">账号:</view>
+      <input 
+        class="form-input" 
+        name="username" 
+        placeholder="请输入账号" 
+        value="{{form.username}}" 
+        bindinput="onUsernameInput"
+      />
+    </view>
+
+    <view class="form-item required">
+      <view class="form-label">密码:</view>
+      <input 
+        class="form-input" 
+        name="password" 
+        type="password"
+        placeholder="请输入登录密码" 
+        value="{{form.password}}" 
+        bindinput="onPasswordInput"
+      />
+    </view>
+
+    <view class="form-item required">
+      <view class="form-label">昵称:</view>
+      <input 
+        class="form-input" 
+        name="name" 
+        placeholder="请输入昵称" 
+        value="{{form.name}}" 
+        bindinput="onNameInput"
+      />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">手机号:</view>
+      <input 
+        class="form-input" 
+        name="phone" 
+        type="number"
+        placeholder="请输入手机号" 
+        value="{{form.phone}}" 
+        bindinput="onPhoneInput"
+      />
+    </view>
+
+    <view class="form-item required">
+      <view class="form-label">身份等级:</view>
+      <picker 
+        mode="selector" 
+        range="{{levelArray}}" 
+        range-key="label" 
+        value="{{levelIndex}}" 
+        bindchange="onLevelChange"
+      >
+        <view class="picker-selector">{{levelArray[levelIndex].label}}</view>
+      </picker>
+    </view>
+
+    <view class="submit-area">
+      <button form-type="submit" type="primary" class="submit-btn">添加</button>
+    </view>
+  </form>
+</view>

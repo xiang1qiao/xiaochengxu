@@ -1,0 +1,44 @@
+先解压api.rar和web.rar二个压缩包
+
+
+后端启动方法:
+先安装yolo提供的requirements.txt中的运行库  本地可以运行yolo的可以不必安装
+再安装Flask后端的运行库
+pip install Flask  -i https://pypi.tuna.tsinghua.edu.cn/simple/
+pip install Flask-Cors  -i https://pypi.tuna.tsinghua.edu.cn/simple/
+pip install PyJWT -i https://pypi.tuna.tsinghua.edu.cn/simple/
+pip install pytz -i https://pypi.tuna.tsinghua.edu.cn/simple/
+pip install pymysql -i https://pypi.tuna.tsinghua.edu.cn/simple/
+pip install SQLAlchemy  -i https://pypi.tuna.tsinghua.edu.cn/simple/
+
+
+
+然后在api文件夹中 地址栏输入cmd 回车后出现终端输入框
+（提示）默认使用的是sqlite3数据库 如果需要切换mysql 在api/model.py的160行-164行注释掉  解开167-180行注释 并填写对应的mysql 数据库名 用户名 密码信息
+运行: python main.py  或pycharm中运行main.py
+启动后端
+
+默认管理员账号:admin
+默认管理员密码:admin
+
+在api\ultralytics-main 中替换bast.pt为自己的模型
+
+
+
+微信小程序
+初次使用：
+    在微信小程序开发工具初始页面点击导入  然后选择解压后的文件夹 进入到文件夹后 直接点击选择文件夹即可（不需要再选择任何文件夹了）
+        选择信任项目 等待几十秒项目自动编译完成后即可访问
+    然后 点击右上角的 详情->本地设置->不校验合法域名,web-view,TLS版本以及HTTPS安全证书  点击勾选
+
+    即可在微信小程序开发工具进行访问
+
+后续直接启动微信小程序开发工具  选择项目  即可访问
+
+
+如果需要在手机上访问 需要保证手机与电脑在同一个局域网内 ，然后打开utils文件夹下的api.js文件
+将默认的const API_BASE_URL = "http://127.0.0.1:8000/api";  修改为 const API_BASE_URL = "http://你的局域网ip:8000/api"; 
+然后点击 预览  使用手机微信扫码即可进行访问
+
+
+

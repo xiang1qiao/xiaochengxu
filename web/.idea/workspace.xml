@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ab717ca5-c228-4053-849a-23499ab4d927" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/../../MedicineDetection_flask/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../MedicineDetection_flask/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MedicineDetection_flask/runs/result.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/../../MedicineDetection_flask/runs/result.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MedicineDetection_flask/utils/chatApi.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../MedicineDetection_flask/utils/chatApi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MedicineDetection_springboot/src/main/java/com/example/Kcsj/controller/PredictionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../MedicineDetection_springboot/src/main/java/com/example/Kcsj/controller/PredictionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MedicineDetection_vue/src/views/imgRecord/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../../MedicineDetection_vue/src/views/imgRecord/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MedicineDetection_vue/src/views/videoPredict/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../../MedicineDetection_vue/src/views/videoPredict/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MedicineDetection_vue/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../MedicineDetection_vue/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/views/img.py" beforeDir="false" afterPath="$PROJECT_DIR$/../api/views/img.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/img_detection/img_detection.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/img_detection/img_detection.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/img_detection/img_detection.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/pages/img_detection/img_detection.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/img_detection/img_detection.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/pages/img_detection/img_detection.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/img_list/img_list.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/img_list/img_list.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="3AeWFjRYrVNDvupLTowXe7puqEh" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "E:/End/MedicineDetection/MedicineDetection/xiaochengxu/web",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.language.and.region",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-PY-252.26830.99" />
+        <option value="bundled-python-sdk-164cda30dcd9-0af03a5fa574-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.26830.99" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="ab717ca5-c228-4053-849a-23499ab4d927" name="更改" comment="" />
+      <created>1772953414886</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1772953414886</updated>
+      <workItem from="1772953416196" duration="3000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

@@ -1,0 +1,39 @@
+.index-main {
+  padding: var(--spacing-md);
+  min-height: 100vh;
+  background-color: #F5F5F5;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+/* 页面标题 */
+.page-title {
+  text-align: center;
+  margin-top: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
+}
+
+.page-title h1 {
+  font-size: 44rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: var(--spacing-xs);
+}
+
+.page-title p {
+  font-size: 24rpx;
+  color: #999999;
+  letter-spacing: 2rpx;
+}
+
+/* 响应式布局 */
+@media (max-width: 750rpx) {
+  .index-main {
+    padding: var(--spacing-sm);
+  }
+  
+  .page-title h1 {
+    font-size: 36rpx;
+  }
+}

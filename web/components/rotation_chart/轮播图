@@ -1,0 +1,27 @@
+使用方法
+先加载组件  在对应页面的.json文件夹中 加载组件
+{
+  "usingComponents": {
+    "my-rotation-chart": "/components/rotation_chart/rotation_chart"
+  }
+}
+在js文件夹中创建变量列表 里面包含了菜单的各种信息
+  data: {
+    ImgDataList:[ //轮播图列表
+      {
+        "imgLink":"https://img.zetab.top/api/img?  id=3be5dce2-0c63-4d22-917e-1e5246b9775e.jpg",  //图片连接
+        "link":"/pages/home/home"                    //转跳连接
+      },
+      {
+        "imgLink":"https://img.zetab.top/api/img?id=dbaa4442-4e44-430c-9876-640846b9ff03.png",
+        "link":"/pages/home/home"
+      },
+      {
+        "imgLink":"https://img.zetab.top/api/img?id=7dc13fc5-bf44-4e26-b321-be68a160944f.jpg",
+        "link":"/pages/home/home"
+      },
+    ],
+  },
+
+在页面中使用这个组件 传入值
+<my-rotation-chart imgDataList="{{ImgDataList}}" />

@@ -1,0 +1,81 @@
+<view class="home-container fade-in">
+  <!-- 页面标题 -->
+  <view class="page-title">
+    <h1>个人中心</h1>
+    <p>账户管理与设置</p>
+  </view>
+
+  <!-- 用户信息卡片 -->
+  <view class="user-info-card">
+    <view class="user-header">
+      <view class="user-avatar">
+        <image src="/assets/img/login_icon.jpg" mode="aspectFill" class="avatar"></image>
+      </view>
+      <view class="user-basic-info">
+        <text class="user-name">{{userInfo.name || '未设置'}}</text>
+        <text class="user-role">{{levelDic[userInfo.level] || '普通用户'}}</text>
+      </view>
+    </view>
+    
+    <view class="user-details">
+      <view class="detail-item">
+        <text class="detail-label">账号</text>
+        <text class="detail-value">{{userInfo.username || '-'}}</text>
+      </view>
+      <view class="detail-item">
+        <text class="detail-label">手机号码</text>
+        <text class="detail-value">{{userInfo.phone || '-'}}</text>
+      </view>
+      <view class="detail-item">
+        <text class="detail-label">创建日期</text>
+        <text class="detail-value">{{userInfo.createdAt || '-'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 资料修改卡片 -->
+  <view class="edit-form-card">
+    <text class="card-title">资料修改</text>
+    
+    <view class="form-group">
+      <text class="form-label">昵称</text>
+      <input 
+        type="text" 
+        placeholder="请输入昵称" 
+        value="{{form.name}}" 
+        bindinput="handleInputChange"
+        class="input"
+        data-field="name" 
+        placeholder-class="text-tertiary"
+      />
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">手机号</text>
+      <input 
+        type="number" 
+        placeholder="请输入手机号" 
+        value="{{form.phone}}" 
+        bindinput="handleInputChange"
+        class="input"
+        data-field="phone" 
+        placeholder-class="text-tertiary"
+      />
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">新密码</text>
+      <input 
+        type="password" 
+        placeholder="密码长度需要在6位以上" 
+        value="{{form.password}}" 
+        data-field="password" 
+        bindinput="handleInputChange"
+        class="input"
+        placeholder-class="text-tertiary"
+      />
+    </view>
+    
+    <button bindtap="submitForm" class="submit-btn">保存</button>
+  </view>
+</view>

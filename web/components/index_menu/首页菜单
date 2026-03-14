@@ -1,0 +1,27 @@
+使用方法
+先加载组件  在对应页面的.json文件夹中 加载组件
+{
+  "usingComponents": {
+    "my-index-menu": "/components/index_menu/index_menu",
+  }
+}
+在js文件夹中创建变量列表 里面包含了菜单的各种信息
+  data: {
+    MenuList:[
+      {
+        title:"标题",
+        imgLink:"https://img.zetab.top/api/img?id=317ef9ef-4673-4ec9-b4d0-265968299f9e.png",
+        link:"/pages/home/home",
+        level:0
+      },
+      {
+        title:"标题2",
+        imgLink:"https://img.zetab.top/api/img?id=b65c207d-37ed-4d32-82f9-f994ddf5373e.png",
+        link:"",
+        level:0
+      }
+    ]
+  },
+
+在页面中使用这个组件 传入值
+<my-index-menu MenuList="{{MenuList}}" />

@@ -1,0 +1,8 @@
+<!--pages/rotation_chart/rotation_chart.wxml-->
+<view class="swiper-container">
+<swiper indicator-dots="true" autoplay="true" circular="true" class="swiper">
+  <swiper-item wx:for="{{imgDataList}}" wx:for-item="item" wx:for-index="index" wx:key="index" >
+    <image src="{{item.imgLink}}" mode="aspectFill" class="swiper-img" bindtap="pageGoTo" data-link="{{item.link}}" />
+  </swiper-item>
+</swiper>
+</view>

@@ -1,0 +1,17 @@
+<!--pages/components/index_menu/index_menu.wxml-->
+<view class="menu-main-view">
+    <view wx:for="{{MenuList}}"
+    wx:for-item="item" 
+    wx:for-index="index" 
+    wx:key="index" 
+    class="menu-content-view card-fly-in" 
+    style="animation-delay: {{index * 0.1}}s;" 
+    bindtap="pageGoTo" 
+    data-link="{{item.link}}" 
+    wx:if="{{item.level <= level}}">
+        <view class="icon-container">
+            <image src="{{item.imgLink}}" mode="aspectFit" class="icon-img" />
+        </view>
+        <text>{{item.title}}</text>
+    </view>
+</view>

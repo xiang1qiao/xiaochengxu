@@ -1,0 +1,43 @@
+<!--pages/register/register.wxml-->
+<view class="global">
+    <view class="login_frame">
+        <view class="logo-container">
+            <view class="logo-circle">
+                <image src="/assets/img/login_icon.jpg" mode="aspectFill" class="logo-img" />
+            </view>
+        </view>
+        <view class="title">YOLO 目标检测系统</view>
+        <view class="subtitle">创建您的账号</view>
+
+        <view class="form">
+            <view class="input-group">
+                <input type="text" placeholder="用户名" class="form-input" data-field="username" value="{{form.username}}" bindinput="handleInputChange" />
+                <view class="input-icon">
+                    <icon type="warn" size="20" color="#999"></icon>
+                </view>
+            </view>
+            <view class="input-group">
+                <input type="password" placeholder="密码" class="form-input" data-field="password" value="{{form.password}}" bindinput="handleInputChange" />
+                <view class="input-icon">
+                    <icon type="warn" size="20" color="#999"></icon>
+                </view>
+            </view>
+            <view class="input-group">
+                <input type="password" placeholder="确认密码" class="form-input" data-field="pwd" value="{{form.pwd}}" bindinput="handleInputChange" />
+
+                <view class="input-icon">
+                    <icon type="warn" size="20" color="#999"></icon>
+                </view>
+            </view>
+        </view>
+
+        <button class="login-btn" bindtap="register">
+            <text>注 册</text>
+       
+        </button>
+
+        <navigator url="/pages/login/login" class="footer-links">
+            <text class="register-link">已有账号? 立即登录</text>
+        </navigator>
+    </view>
+</view>

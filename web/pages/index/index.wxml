@@ -1,0 +1,14 @@
+<!--index.wxml-->
+<view class="index-main fade-in">
+  <!-- 页面标题 -->
+  <view class="page-title">
+    <h1>YOLO 检测</h1>
+    <p>AI 驱动的智能视觉解决方案</p>
+  </view>
+  
+  <!-- 轮播图 -->
+  <my-rotation-chart imgDataList="{{ImgDataList}}" />
+  
+  <!-- 功能菜单 -->
+  <my-index-menu MenuList="{{MenuList}}" />
+</view>

@@ -1,0 +1,43 @@
+/* pages/rotation_chart/rotation_chart.wxss */
+
+.swiper-container {
+  margin: var(--spacing-md) 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+}
+
+.swiper {
+  position: relative;
+}
+
+.swiper-img {
+  width: 100%;
+  height: 300rpx;
+  border-radius: var(--radius-lg);
+  transition: transform 0.3s ease;
+}
+
+.swiper-img:active {
+  transform: scale(0.98);
+}
+
+/* 简洁的指示器样式 */
+.swiper .wx-swiper-dots {
+  bottom: 16rpx;
+  z-index: 2;
+}
+
+.swiper .wx-swiper-dot {
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 4rpx;
+  margin: 0 6rpx;
+  background-color: rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.swiper .wx-swiper-dot-active {
+  background-color: #FFFFFF;
+  width: 20rpx;
+}

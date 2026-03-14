@@ -1,0 +1,42 @@
+<view class="detection-main">
+    <view class="video-div">
+        <view class="video-show-div">
+            <video wx:if="{{form.mid_raw}}" src="{{videoLinkGet + form.mid_raw}}" controls="{{true}}" mode="aspectFit" class="video-show-css"  data-mid="{{form.mid_raw}}" />
+            <video wx:elif="{{tempVideoUrl}}" src="{{tempVideoUrl}}" controls="{{true}}" mode="aspectFit" class="video-show-css" />
+            <view wx:else class="placeholder">请上传视频</view>
+        </view>
+
+        <view class="up-btn-group">
+            <button bindtap="chooseVideo" type="default" size="mini" disabled="{{isUploading}}">{{isUploading ? '上传中...' : '选择/上传视频'}}</button>
+        </view>
+    </view>
+
+    <view class="center-area">
+        <button bindtap="detectionVideo" type="primary" size="mini" loading="{{isDetecting}}">进行检测</button>
+
+        <scroll-view scroll-y class="result-container" wx:if="{{form.nameDic.length != 0}}">
+            <block wx:for="{{form.nameDic}}" wx:for-item="item" wx:for-index="index" wx:key="index">
+                <view class="result-item">
+                    <text>类型: {{item["类别"]}}</text> <text>置信度: {{item["置信度"]}}</text>
+                    <text>目标位置:</text>
+                    <view class="coordinate">
+                        <text>x1:{{item['坐标']['x1']}} y1:{{item['坐标']['y1']}}</text>
+                        <text>x2:{{item['坐标']['x2']}} y2:{{item['坐标']['y2']}}</text>
+                    </view>
+                </view>
+            </block>
+        </scroll-view>
+        <view wx:elif="{{!isDetecting}}" class="placeholder-result">检测结果信息</view>
+    </view>
+
+    <view class="video-div">
+        <view class="video-show-div">
+            <video wx:if="{{form.mid_handle}}" src="{{videoLinkGet + form.mid_handle}}" controls="{{true}}" mode="aspectFit" class="video-show-css"  data-mid="{{form.mid_handle}}" />
+            <view wx:else class="placeholder">检测后显示结果</view>
+        </view>
+
+        <view class="up-btn-group">
+            <button bindtap="saveVideoToPhotosAlbum" type="default" size="mini" disabled="{{!form.mid_handle}}">保存到本地</button>
+        </view>
+    </view>
+</view>

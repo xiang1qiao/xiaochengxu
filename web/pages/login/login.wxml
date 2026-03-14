@@ -1,0 +1,38 @@
+<view class="global">
+    <view class="login_frame">
+        <view class="logo-container">
+            <view class="logo-circle">
+                <image src="/assets/img/login_icon.jpg" class="logo-img" />
+            </view>
+        </view>
+        <view class="title">YOLO 目标检测系统</view>
+        <view class="subtitle">欢迎使用，请登录您的账号</view>
+
+        <form class="form">
+            <view class="input-group">
+                <input type="text" placeholder="用户名" class="form-input" bindinput="handleInputChange" data-field="username"   value="{{form.username}}"  />
+                <view class="input-icon">
+                    <icon type="warn" size="20" color="#999"></icon>
+                </view>
+            </view>
+            <view class="input-group">
+                <input type="password" placeholder="密码" class="form-input" bindinput="handleInputChange" data-field="password"    value="{{form.password}}"/>
+                <view class="input-icon">
+                    <icon type="info" size="20" color="#999"></icon>
+                </view>
+            </view>
+        </form>
+
+        <button class="login-btn" bindtap="login">
+            <text>登 录</text>
+            <view class="btn-icon">
+                <icon type="success" size="20" color="white"></icon>
+            </view>
+        </button>
+
+        <view class="footer-links">
+            <navigator url="/pages/register/register" class="register-link">注册账号</navigator>
+            <view class="forgot-link"></view>
+        </view>
+    </view>
+</view>
