@@ -1,7 +1,6 @@
+// pages/user_list/user_list.js
 import http from '../../utils/api';
-import {
-    formatTime
-} from '../../utils/util';
+import { formatTime } from '../../utils/util.js';
 
 Page({
     data: {
@@ -9,6 +8,7 @@ Page({
         dataList: [],
         total: 0,
         selectedIds: [],
+        showFilter: false,
 
         form: {
             page: 1,
@@ -30,66 +30,39 @@ Page({
         this.dataLoad();
     },
 
-
     onShow() {
         this.dataLoad();
     },
 
-    onUsernameInput(e) {
-        this.setData({
-            'form.username': e.detail.value
-        });
-    },
-
-    onNameInput(e) {
-        this.setData({
-            'form.name': e.detail.value
-        });
-    },
-
-    onPhoneInput(e) {
-        this.setData({
-            'form.phone': e.detail.value
-        });
-    },
-
-    onSearch() {
+    onPullDownRefresh() {
         this.setData({
             'form.page': 1
+        }, () => {
+            this.dataLoad(() => {
+                wx.stopPullDownRefresh();
+            });
         });
-        this.dataLoad();
     },
 
-
-    dataLoad() {
+    // 数据加载
+    dataLoad(callback) {
         this.setData({
             isLoading: true
         });
-
 
         http.apiAdminUserListGet(this.data.form).then((res) => {
             this.setData({
                 isLoading: false
             });
             if (res.code === 200) {
-
-                const selectedMap = this.data.selectedIds.reduce((acc, id) => {
-                    acc[id] = true;
-                    return acc;
-                }, {});
-
-                const dataList = res.data.data.map(item => ({
-                    ...item,
-                    checked: !!selectedMap[item.id]
-                }));
-
                 this.setData({
-                    dataList: dataList,
+                    dataList: res.data.data,
                     total: res.data.total
                 });
+                if (callback) callback();
             } else {
                 wx.showToast({
-                    title: res.msg,
+                    title: res.msg || '加载失败',
                     icon: 'none'
                 });
             }
@@ -98,74 +71,108 @@ Page({
                 isLoading: false
             });
             wx.showToast({
-                title: '加载失败',
+                title: '网络错误，请重试',
                 icon: 'none'
+            });
+            if (callback) callback();
+        });
+    },
+
+    // 刷新数据
+    refreshData() {
+        this.setData({
+            'form.page': 1
+        }, () => {
+            this.dataLoad();
+        });
+    },
+
+    // 切换筛选面板
+    toggleFilter() {
+        this.setData({
+            showFilter: !this.data.showFilter
+        });
+    },
+
+    // 账号输入
+    onUsernameInput(e) {
+        this.setData({
+            'form.username': e.detail.value
+        });
+    },
+
+    // 姓名输入
+    onNameInput(e) {
+        this.setData({
+            'form.name': e.detail.value
+        });
+    },
+
+    // 手机号输入
+    onPhoneInput(e) {
+        this.setData({
+            'form.phone': e.detail.value
+        });
+    },
+
+    // 搜索
+    onSearch() {
+        this.setData({
+            'form.page': 1
+        }, () => {
+            this.dataLoad();
+        });
+    },
+
+    // 重置
+    onReset() {
+        this.setData({
+            form: {
+                page: 1,
+                pagesize: 10,
+                username: '',
+                name: '',
+                phone: '',
+            },
+            selectedIds: []
+        }, () => {
+            this.dataLoad();
+            wx.showToast({
+                title: '已重置',
+                icon: 'success'
             });
         });
     },
 
-    get totalPages() {
-        return Math.ceil(this.data.total / this.data.form.pagesize);
-    },
-
-
-
+    // 上一页
     prevPage() {
-        if (this.data.form.page > 1) {
-            this.setData({
-                'form.page': this.data.form.page - 1
-            });
+        if (this.data.form.page <= 1) return;
+        this.setData({
+            'form.page': this.data.form.page - 1
+        }, () => {
             this.dataLoad();
-        }
+        });
     },
 
+    // 下一页
     nextPage() {
-        let maxPage = Math.ceil(this.data.total / this.data.form.pagesize)
-        if (this.data.form.page >= maxPage) {
-            wx.showToast({
-                title: "已经是最后一页了",
-                icon: 'none'
-            });
-            return
-        }
+        const totalPages = Math.ceil(this.data.total / this.data.form.pagesize);
+        if (this.data.form.page >= totalPages) return;
         this.setData({
             'form.page': this.data.form.page + 1
-        });
-        this.dataLoad();
-    },
-
-
-
-    handleSelectionChange(e) {
-        const selectedIdsOnPage = e.detail.value.map(id => parseInt(id));
-        let newSelectedIds = [...this.data.selectedIds];
-
-
-        const currentPageIds = this.data.dataList.map(item => item.id);
-
-
-        newSelectedIds = newSelectedIds.filter(id => !currentPageIds.includes(id));
-
-
-        newSelectedIds = [...newSelectedIds, ...selectedIdsOnPage];
-
-        this.setData({
-            selectedIds: newSelectedIds,
-
-            dataList: this.data.dataList.map(item => ({
-                ...item,
-                checked: newSelectedIds.includes(item.id)
-            }))
+        }, () => {
+            this.dataLoad();
         });
     },
 
+    // 添加用户
     add() {
         wx.navigateTo({
             url: '/pages/user_list_add/user_list_add'
         });
-
     },
 
+    // 编辑用户
     put(e) {
         const uid = e.currentTarget.dataset.uid;
         wx.navigateTo({
@@ -173,12 +180,15 @@ Page({
         });
     },
 
+    // 删除用户
     del_fun(e) {
         const id = e.currentTarget.dataset.id;
-
         wx.showModal({
-            title: '提示',
-            content: '确定删除该账号吗?',
+            title: '确认删除',
+            content: '删除后该用户将无法登录系统，是否继续？',
+            confirmColor: '#DC2626',
+            confirmText: '删除',
+            cancelText: '取消',
             success: (res) => {
                 if (res.confirm) {
                     this.deleteUser(id.toString());
@@ -187,47 +197,77 @@ Page({
         });
     },
 
-    batchDel() {
-        if (this.data.selectedIds.length === 0) return;
-
-        wx.showModal({
-            title: '提示',
-            content: `确定删除选中的 ${this.data.selectedIds.length} 条数据吗?`,
-            success: (res) => {
-                if (res.confirm) {
-                    const ids = this.data.selectedIds.join(',');
-                    this.deleteUser(ids);
-                }
-            }
-        });
-    },
-
     deleteUser(ids) {
+        wx.showLoading({
+            title: '删除中...',
+            mask: true
+        });
 
         http.apiAdminUserListDel({
             id: ids
         }).then((res) => {
+            wx.hideLoading();
             if (res.code === 200) {
                 wx.showToast({
-                    title: res.msg,
+                    title: '删除成功',
                     icon: 'success'
                 });
 
                 this.setData({
                     selectedIds: []
                 });
+                
+                // 如果当前页没有数据了，返回上一页
+                if (this.data.dataList.length === 1 && this.data.form.page > 1) {
+                    this.setData({
+                        'form.page': this.data.form.page - 1
+                    });
+                }
+                
                 this.dataLoad();
             } else {
                 wx.showToast({
-                    title: res.msg,
+                    title: res.msg || '删除失败',
                     icon: 'none'
                 });
             }
         }).catch(err => {
+            wx.hideLoading();
             wx.showToast({
-                title: '删除失败',
+                title: '网络错误，请重试',
                 icon: 'none'
             });
+        });
+    },
+
+    // 多选变化
+    onSelectionChange(e) {
+        this.setData({
+            selectedIds: e.detail.value
+        });
+    },
+
+    // 批量删除
+    batchDelete() {
+        if (this.data.selectedIds.length === 0) {
+            wx.showToast({
+                title: '请先选择用户',
+                icon: 'none'
+            });
+            return;
+        }
+
+        wx.showModal({
+            title: '确认批量删除',
+            content: `确定删除选中的 ${this.data.selectedIds.length} 个用户吗？`,
+            confirmColor: '#DC2626',
+            confirmText: '删除',
+            cancelText: '取消',
+            success: (res) => {
+                if (res.confirm) {
+                    this.deleteUser(this.data.selectedIds.join(','));
+                }
+            }
         });
     }
 });

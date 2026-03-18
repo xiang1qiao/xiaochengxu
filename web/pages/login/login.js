@@ -1,96 +1,85 @@
 // pages/login/login.js
 
-
 import http from '../../utils/api';
 
 Page({
-
-    /**
-     * 页面的初始数据
-     */
     data: {
         form: {
-            "username": "",
-            "password": "",
+            username: "",
+            password: "",
         },
         isLoading: false,
+        showPassword: false,
     },
 
-    /**
-     * 生命周期函数--监听页面加载
-     */
     onLoad(options) {
-
     },
 
-    /**
-     * 生命周期函数--监听页面初次渲染完成
-     */
     onReady() {
-
-
     },
 
-    /**
-     * 生命周期函数--监听页面显示
-     */
     onShow() {
-
     },
 
-    /**
-     * 生命周期函数--监听页面隐藏
-     */
     onHide() {
-
     },
 
-    /**
-     * 生命周期函数--监听页面卸载
-     */
     onUnload() {
-
     },
 
-    /**
-     * 页面相关事件处理函数--监听用户下拉动作
-     */
     onPullDownRefresh() {
-
     },
 
-    /**
-     * 页面上拉触底事件的处理函数
-     */
     onReachBottom() {
-
     },
 
-    /**
-     * 用户点击右上角分享
-     */
     onShareAppMessage() {
-
     },
 
-    handleInputChange(e){
-        const field = e.currentTarget.dataset.field; // 获取data-field值
-        const value = e.detail.value; // 获取输入值
+    handleInputChange(e) {
+        const field = e.currentTarget.dataset.field;
+        const value = e.detail.value;
         
         this.setData({
-          [`form.${field}`]: value 
+            [`form.${field}`]: value 
         });
     },
 
+    clearInput(e) {
+        const field = e.currentTarget.dataset.field;
+        this.setData({
+            [`form.${field}`]: ''
+        });
+    },
+
+    togglePassword() {
+        this.setData({
+            showPassword: !this.data.showPassword
+        });
+    },
 
     login() {
-        // 显示加载状态
+        if (!this.data.form.username) {
+            wx.showToast({
+                title: '请输入用户名',
+                icon: 'none'
+            });
+            return;
+        }
+
+        if (!this.data.form.password) {
+            wx.showToast({
+                title: '请输入密码',
+                icon: 'none'
+            });
+            return;
+        }
+
         this.setData({
             isLoading: true
         });
         
         http.apiLogin(this.data.form).then(res => {
-            // 隐藏加载状态
             this.setData({
                 isLoading: false
             });
@@ -101,12 +90,13 @@ Page({
                     icon: 'success',
                     duration: 1500
                 });
+                
                 wx.setStorageSync('token', res.data.token);
                 wx.setStorageSync('name', res.data.name);
                 wx.setStorageSync('level', res.data.level);
                 wx.setStorageSync('username', res.data.username);
                 wx.setStorageSync('uid', res.data.uid);
- 
+
                 setTimeout(() => {
                     wx.switchTab({
                         url: '/pages/index/index'
@@ -115,23 +105,20 @@ Page({
 
             } else {
                 wx.showToast({
-                    title: res.msg,
+                    title: res.msg || '登录失败',
                     icon: 'none',
                     duration: 3000
                 });
             }
         }).catch(err => {
-            // 隐藏加载状态
             this.setData({
                 isLoading: false
             });
             wx.showToast({
-                title: '登录失败，请重试',
+                title: '网络错误，请重试',
                 icon: 'none',
                 duration: 3000
             });
-        })
+        });
     }
-
-
-})
+});
