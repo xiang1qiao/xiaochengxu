@@ -1,0 +1,42 @@
+<!--custom-tab-bar/index.wxml-->
+<view class="tab-bar-container">
+  <view class="tab-bar-bg">
+    <view class="tab-bar-gradient"></view>
+  </view>
+  
+  <view class="tab-bar-content">
+    <view 
+      class="tab-item {{selected === index ? 'active' : ''}}" 
+      wx:for="{{list}}" 
+      wx:key="index"
+      data-index="{{index}}"
+      data-path="{{item.pagePath}}"
+      bindtap="switchTab"
+    >
+      <view class="tab-icon-wrapper">
+        <view class="tab-icon-bg" wx:if="{{selected === index}}"></view>
+        <view class="tab-icon">
+          <svg class="icon-svg {{selected === index ? 'active' : ''}}" viewBox="0 0 24 24" fill="none">
+            <block wx:if="{{index === 0}}">
+              <!-- 首页图标 -->
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="currentColor"/>
+            </block>
+            <block wx:if="{{index === 1}}">
+              <!-- 检测图标 -->
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
+            </block>
+            <block wx:if="{{index === 2}}">
+              <!-- 我的图标 -->
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
+            </block>
+          </svg>
+        </view>
+      </view>
+      <text class="tab-text {{selected === index ? 'active' : ''}}">{{item.text}}</text>
+      <view class="tab-indicator" wx:if="{{selected === index}}"></view>
+    </view>
+  </view>
+  
+  <!-- 安全区域适配 -->
+  <view class="safe-area-bottom"></view>
+</view>

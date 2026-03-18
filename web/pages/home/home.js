@@ -68,6 +68,9 @@ Page({
             this.dataLoad();
             this.loadUserStats();
         }
+        this.getTabBar && this.getTabBar().setData({
+            selected: 2
+        });
     },
 
     /**

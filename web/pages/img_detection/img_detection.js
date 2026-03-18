@@ -28,6 +28,9 @@ Page({
 
     onShow() {
         this.loadDetectionStats();
+        this.getTabBar && this.getTabBar().setData({
+            selected: 1
+        });
     },
 
     loadDetectionStats() {

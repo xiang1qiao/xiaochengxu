@@ -15,27 +15,21 @@
     "pages/user_list_add/user_list_add"
   ],
   "tabBar": {
-    "backgroundColor": "#FFFFFF",
-    "borderStyle": "white",
+    "custom": true,
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页",
-        "iconPath": "assets/img/home.png",
-        "selectedIconPath": "assets/img/home.png"
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/img_detection/img_detection",
+        "text": "检测"
       },
       {
         "pagePath": "pages/home/home",
-        "text": "我的",
-        "iconPath": "assets/img/user.png",
-        "selectedIconPath": "assets/img/user.png"
+        "text": "我的"
       }
-    ],
-    "color": "#999999",
-    "selectedColor": "#1677FF",
-    "fontSize": 24,
-    "iconWidth": 28,
-    "height": 90
+    ]
   },
   "window": {
     "backgroundTextStyle": "dark",

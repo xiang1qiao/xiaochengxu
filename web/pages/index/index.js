@@ -78,6 +78,9 @@ Page({
    */
   onShow() {
     this.loadStats();
+    this.getTabBar && this.getTabBar().setData({
+      selected: 0
+    });
   },
 
   /**

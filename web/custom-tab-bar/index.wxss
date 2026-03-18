@@ -1,0 +1,171 @@
+/* custom-tab-bar/index.wxss */
+
+.tab-bar-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+}
+
+/* 背景层 */
+.tab-bar-bg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(100% - 20rpx);
+  background: #FFFFFF;
+  border-radius: 32rpx 32rpx 0 0;
+  box-shadow: 0 -4rpx 30rpx rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.tab-bar-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4rpx;
+  background: linear-gradient(90deg, #0D9488 0%, #14B8A6 50%, #0D9488 100%);
+}
+
+/* 内容层 */
+.tab-bar-content {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding-top: 16rpx;
+  padding-bottom: env(safe-area-inset-bottom);
+  height: 100rpx;
+}
+
+/* 导航项 */
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  flex: 1;
+  height: 100%;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-item:active {
+  transform: scale(0.95);
+}
+
+/* 图标包装器 */
+.tab-icon-wrapper {
+  position: relative;
+  width: 96rpx;
+  height: 96rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8rpx;
+}
+
+/* 选中时的背景 */
+.tab-icon-bg {
+  position: absolute;
+  width: 80rpx;
+  height: 80rpx;
+  background: linear-gradient(135deg, #0D9488 0%, #14B8A6 100%);
+  border-radius: 50%;
+  box-shadow: 0 8rpx 24rpx rgba(13, 148, 136, 0.35);
+  animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 图标 */
+.tab-icon {
+  position: relative;
+  z-index: 1;
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-svg {
+  width: 44rpx;
+  height: 44rpx;
+  color: #94A3B8;
+  transition: all 0.3s ease;
+}
+
+.icon-svg.active {
+  color: #FFFFFF;
+  width: 40rpx;
+  height: 40rpx;
+}
+
+/* 文字 */
+.tab-text {
+  font-size: 22rpx;
+  color: #64748B;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-top: 4rpx;
+}
+
+.tab-text.active {
+  color: #0D9488;
+  font-weight: 600;
+  transform: translateY(-4rpx);
+}
+
+/* 指示器 */
+.tab-indicator {
+  position: absolute;
+  bottom: 16rpx;
+  width: 32rpx;
+  height: 4rpx;
+  background: linear-gradient(90deg, #0D9488 0%, #14B8A6 100%);
+  border-radius: 2rpx;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* 安全区域 */
+.safe-area-bottom {
+  height: env(safe-area-inset-bottom);
+  background: #FFFFFF;
+}
+
+/* 选中状态的整体效果 */
+.tab-item.active {
+  transform: translateY(-8rpx);
+}
+
+.tab-item.active .tab-icon-wrapper {
+  transform: translateY(-4rpx);
+}
