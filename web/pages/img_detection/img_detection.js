@@ -10,6 +10,7 @@ Page({
             suggestion: ""
         },
         isDetecting: false,
+        isUploading: false,
         showPreview: false,
         previewImage: ""
     },
@@ -69,6 +70,10 @@ Page({
 
     // 上传图片
     uploadImage(tempFilePath) {
+        this.setData({
+            isUploading: true
+        });
+        
         wx.uploadFile({
             url: http.imgLinkPost,
             filePath: tempFilePath,
@@ -110,7 +115,9 @@ Page({
                 });
             },
             complete: () => {
-
+                this.setData({
+                    isUploading: false
+                });
             }
         });
 

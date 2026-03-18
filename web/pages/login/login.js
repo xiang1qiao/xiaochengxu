@@ -13,6 +13,7 @@ Page({
             "username": "",
             "password": "",
         },
+        isLoading: false,
     },
 
     /**
@@ -83,7 +84,17 @@ Page({
 
 
     login() {
+        // 显示加载状态
+        this.setData({
+            isLoading: true
+        });
+        
         http.apiLogin(this.data.form).then(res => {
+            // 隐藏加载状态
+            this.setData({
+                isLoading: false
+            });
+            
             if (res.code == 200) {
                 wx.showToast({
                     title: '登录成功',
@@ -109,6 +120,16 @@ Page({
                     duration: 3000
                 });
             }
+        }).catch(err => {
+            // 隐藏加载状态
+            this.setData({
+                isLoading: false
+            });
+            wx.showToast({
+                title: '登录失败，请重试',
+                icon: 'none',
+                duration: 3000
+            });
         })
     }
 

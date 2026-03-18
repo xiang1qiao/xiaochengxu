@@ -1,42 +1,77 @@
-<view class="detection-main">
-    <view class="video-div">
-        <view class="video-show-div">
-            <video wx:if="{{form.mid_raw}}" src="{{videoLinkGet + form.mid_raw}}" controls="{{true}}" mode="aspectFit" class="video-show-css"  data-mid="{{form.mid_raw}}" />
-            <video wx:elif="{{tempVideoUrl}}" src="{{tempVideoUrl}}" controls="{{true}}" mode="aspectFit" class="video-show-css" />
-            <view wx:else class="placeholder">请上传视频</view>
+<view class="detection-main fade-in">
+    <!-- 上传视频卡片 -->
+    <view class="card upload-card">
+        <view class="card-header">
+            <text class="card-title">上传视频</text>
+            <text class="card-subtitle">请上传需要检测的中药材视频</text>
         </view>
-
-        <view class="up-btn-group">
-            <button bindtap="chooseVideo" type="default" size="mini" disabled="{{isUploading}}">{{isUploading ? '上传中...' : '选择/上传视频'}}</button>
-        </view>
-    </view>
-
-    <view class="center-area">
-        <button bindtap="detectionVideo" type="primary" size="mini" loading="{{isDetecting}}">进行检测</button>
-
-        <scroll-view scroll-y class="result-container" wx:if="{{form.nameDic.length != 0}}">
-            <block wx:for="{{form.nameDic}}" wx:for-item="item" wx:for-index="index" wx:key="index">
-                <view class="result-item">
-                    <text>类型: {{item["类别"]}}</text> <text>置信度: {{item["置信度"]}}</text>
-                    <text>目标位置:</text>
-                    <view class="coordinate">
-                        <text>x1:{{item['坐标']['x1']}} y1:{{item['坐标']['y1']}}</text>
-                        <text>x2:{{item['坐标']['x2']}} y2:{{item['坐标']['y2']}}</text>
-                    </view>
+        <view class="video-div">
+            <view class="video-show-div">
+                <video wx:if="{{form.mid_raw}}" src="{{videoLinkGet + form.mid_raw}}" controls="{{true}}" mode="aspectFit" class="video-show-css" data-mid="{{form.mid_raw}}" />
+                <video wx:elif="{{tempVideoUrl}}" src="{{tempVideoUrl}}" controls="{{true}}" mode="aspectFit" class="video-show-css" />
+                <view wx:else class="placeholder" bindtap="chooseVideo">
+                    <view class="placeholder-icon">🎬</view>
+                    <text class="placeholder-text">点击上传视频</text>
                 </view>
-            </block>
-        </scroll-view>
-        <view wx:elif="{{!isDetecting}}" class="placeholder-result">检测结果信息</view>
+            </view>
+            <view class="up-btn-group">
+                <button class="btn btn-secondary" bindtap="chooseVideo" disabled="{{isUploading}}">{{isUploading ? '上传中...' : '选择视频'}}</button>
+            </view>
+        </view>
     </view>
 
-    <view class="video-div">
-        <view class="video-show-div">
-            <video wx:if="{{form.mid_handle}}" src="{{videoLinkGet + form.mid_handle}}" controls="{{true}}" mode="aspectFit" class="video-show-css"  data-mid="{{form.mid_handle}}" />
-            <view wx:else class="placeholder">检测后显示结果</view>
+    <!-- 检测控制和结果卡片 -->
+    <view class="card detection-card">
+        <view class="card-header">
+            <text class="card-title">检测控制</text>
         </view>
+        <view class="center-area">
+            <button class="btn btn-primary detection-btn" bindtap="detectionVideo" loading="{{isDetecting}}" disabled="{{!form.mid_raw || isDetecting}}">
+                {{isDetecting ? '检测中...' : '开始检测'}}
+            </button>
 
-        <view class="up-btn-group">
-            <button bindtap="saveVideoToPhotosAlbum" type="default" size="mini" disabled="{{!form.mid_handle}}">保存到本地</button>
+            <!-- 检测结果 -->
+            <view wx:if="{{form.nameDic.length != 0}}" class="result-section">
+                <text class="section-title">检测结果</text>
+                <scroll-view scroll-y class="result-container">
+                    <block wx:for="{{form.nameDic}}" wx:for-item="item" wx:for-index="index" wx:key="index">
+                        <view class="result-item card-hover">
+                            <view class="result-item-header">
+                                <text class="result-type">{{item["类别"]}}</text>
+                                <text class="result-confidence">置信度: {{item["置信度"]}}</text>
+                            </view>
+                            <view class="result-item-body">
+                                <text class="result-label">目标位置:</text>
+                                <view class="coordinate">
+                                    <text>x1:{{item['坐标']['x1']}} y1:{{item['坐标']['y1']}}</text>
+                                    <text>x2:{{item['坐标']['x2']}} y2:{{item['坐标']['y2']}}</text>
+                                </view>
+                            </view>
+                        </view>
+                    </block>
+                </scroll-view>
+            </view>
+            <view wx:elif="{{!isDetecting}}" class="placeholder-result">检测结果信息</view>
+        </view>
+    </view>
+
+    <!-- 检测结果视频卡片 -->
+    <view class="card result-card">
+        <view class="card-header">
+            <text class="card-title">检测结果</text>
+            <text class="card-subtitle">检测后的视频</text>
+        </view>
+        <view class="video-div">
+            <view class="video-show-div">
+                <video wx:if="{{form.mid_handle}}" src="{{videoLinkGet + form.mid_handle}}" controls="{{true}}" mode="aspectFit" class="video-show-css" data-mid="{{form.mid_handle}}" />
+                <view wx:else class="placeholder">
+                    <view class="placeholder-icon">📊</view>
+                    <text class="placeholder-text">检测后显示结果</text>
+                </view>
+            </view>
+            <view class="up-btn-group">
+                <button class="btn btn-success" bindtap="saveVideoToPhotosAlbum" disabled="{{!form.mid_handle}}">保存到本地</button>
+            </view>
         </view>
     </view>
 </view>

@@ -23,7 +23,7 @@
             </view>
         </form>
 
-        <button class="login-btn" bindtap="login">
+        <button class="login-btn {{isLoading ? 'loading' : ''}}" bindtap="login" disabled="{{isLoading}}">
             <text>登 录</text>
             <view class="btn-icon">
                 <icon type="success" size="20" color="white"></icon>

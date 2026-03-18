@@ -1,51 +1,89 @@
 <!--pages/img_detection/img_detection.wxml-->
-<view class="detection-main">
-
-    <view class="img-div">
-        <view class="img-show-div">
-            <image wx:if="{{form.mid_raw}}" src="{{imgLinkGet + form.mid_raw}}" mode="aspectFit" class="img-show-css" bindtap="imgShowOpen" data-img="{{form.mid_raw}}" />
-            <view wx:else class="placeholder">请上传图片</view>
+<view class="detection-main fade-in">
+    <!-- 上传图片卡片 -->
+    <view class="card upload-card">
+        <view class="card-header">
+            <text class="card-title">上传图片</text>
+            <text class="card-subtitle">请上传需要检测的中药材图片</text>
         </view>
-
-        <view class="up-img">
-            <button bindtap="chooseImage" type="default" size="mini">上传图片</button>
-        </view>
-    </view>
-
-
-    <view class="center-area">
-        <button bindtap="detection" type="primary" size="mini" loading="{{isDetecting}}">进行检测</button>
-
-        <scroll-view scroll-y class="result-container" wx:if="{{form.nameDic.length  != 0}}">
-            <block wx:for="{{form.nameDic}}" wx:for-item="item" wx:for-index="index" wx:key="index">
-                <view class="result-item">
-                    <text>类型: {{item["类别"]}}</text> <text>置信度: {{item["置信度"]}}%</text>
-                    <text>目标位置:</text>
-                    <view class="coordinate">
-                        <text>x1:{{item['坐标']['x1']}} y1:{{item['坐标']['y1']}}</text>
-                        <text>x2:{{item['坐标']['x2']}} y2:{{item['坐标']['y2']}}</text>
-                    </view>
+        <view class="img-div">
+            <view class="img-show-div">
+                <image wx:if="{{form.mid_raw}}" src="{{imgLinkGet + form.mid_raw}}" mode="aspectFit" class="img-show-css" bindtap="imgShowOpen" data-img="{{form.mid_raw}}" />
+                <view wx:else class="placeholder" bindtap="chooseImage">
+                    <view class="placeholder-icon">📷</view>
+                    <text class="placeholder-text">点击上传图片</text>
                 </view>
-            </block>
-        </scroll-view>
-
-        <view class="ai-suggestion" wx:if="{{form.suggestion}}">
-            <view class="ai-suggestion-title">AI建议</view>
-            <view class="ai-suggestion-content">{{form.suggestion}}</view>
+            </view>
+            <view class="up-img">
+                <button class="btn btn-secondary" bindtap="chooseImage" disabled="{{isUploading}}">
+                    {{isUploading ? '上传中...' : '选择图片'}}
+                </button>
+            </view>
         </view>
     </view>
 
-
-    <view class="img-div">
-        <view class="img-show-div">
-            <image wx:if="{{form.mid_handle}}" src="{{imgLinkGet + form.mid_handle}}" mode="aspectFit" class="img-show-css" bindtap="imgShowOpen" data-img="{{form.mid_handle}}" />
-            <view wx:else class="placeholder">检测后显示结果</view>
+    <!-- 检测控制和结果卡片 -->
+    <view class="card detection-card">
+        <view class="card-header">
+            <text class="card-title">检测控制</text>
         </view>
+        <view class="center-area">
+            <button class="btn btn-primary detection-btn" bindtap="detection" loading="{{isDetecting}}" disabled="{{!form.mid_raw || isDetecting}}">
+                {{isDetecting ? '检测中...' : '开始检测'}}
+            </button>
 
-        <view class="up-img">
-            <button bindtap="saveImageToPhotosAlbum" type="default" size="mini" disabled="{{!form.mid_handle}}">保存到本地</button>
+            <!-- 检测结果 -->
+            <view wx:if="{{form.nameDic.length  != 0}}" class="result-section">
+                <text class="section-title">检测结果</text>
+                <scroll-view scroll-y class="result-container">
+                    <block wx:for="{{form.nameDic}}" wx:for-item="item" wx:for-index="index" wx:key="index">
+                        <view class="result-item card-hover">
+                            <view class="result-item-header">
+                                <text class="result-type">{{item["类别"]}}</text>
+                                <text class="result-confidence">置信度: {{item["置信度"]}}%</text>
+                            </view>
+                            <view class="result-item-body">
+                                <text class="result-label">目标位置:</text>
+                                <view class="coordinate">
+                                    <text>x1:{{item['坐标']['x1']}} y1:{{item['坐标']['y1']}}</text>
+                                    <text>x2:{{item['坐标']['x2']}} y2:{{item['坐标']['y2']}}</text>
+                                </view>
+                            </view>
+                        </view>
+                    </block>
+                </scroll-view>
+            </view>
+
+            <!-- AI建议 -->
+            <view class="ai-suggestion" wx:if="{{form.suggestion}}">
+                <view class="ai-suggestion-header">
+                    <text class="ai-suggestion-title">AI建议</text>
+                    <view class="ai-badge">AI</view>
+                </view>
+                <view class="ai-suggestion-content">{{form.suggestion}}</view>
+            </view>
         </view>
     </view>
 
-
+    <!-- 检测结果图片卡片 -->
+    <view class="card result-card">
+        <view class="card-header">
+            <text class="card-title">检测结果</text>
+            <text class="card-subtitle">检测后的图片</text>
+        </view>
+        <view class="img-div">
+            <view class="img-show-div">
+                <image wx:if="{{form.mid_handle}}" src="{{imgLinkGet + form.mid_handle}}" mode="aspectFit" class="img-show-css" bindtap="imgShowOpen" data-img="{{form.mid_handle}}" />
+                <view wx:else class="placeholder">
+                    <view class="placeholder-icon">📊</view>
+                    <text class="placeholder-text">检测后显示结果</text>
+                </view>
+            </view>
+            <view class="up-img">
+                <button class="btn btn-success" bindtap="saveImageToPhotosAlbum" disabled="{{!form.mid_handle}}">
+                    保存到本地
+                </button>
+            </view>
+        </view>
+    </view>
 </view>

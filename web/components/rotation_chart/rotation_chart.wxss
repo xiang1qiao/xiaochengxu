@@ -4,7 +4,7 @@
   margin: var(--spacing-md) 0;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-md);
 }
 
 .swiper {
@@ -13,9 +13,10 @@
 
 .swiper-img {
   width: 100%;
-  height: 300rpx;
+  height: 320rpx;
   border-radius: var(--radius-lg);
   transition: transform 0.3s ease;
+  object-fit: cover;
 }
 
 .swiper-img:active {
@@ -38,6 +39,7 @@
 }
 
 .swiper .wx-swiper-dot-active {
-  background-color: #FFFFFF;
+  background-color: var(--primary-color);
   width: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(59, 130, 246, 0.5);
 }

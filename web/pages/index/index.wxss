@@ -1,39 +1,346 @@
-.index-main {
-  padding: var(--spacing-md);
+/* 主容器 */
+.index-container {
   min-height: 100vh;
-  background-color: #F5F5F5;
+  background: linear-gradient(180deg, #F0FDF4 0%, #F8FAFC 50%, #F1F5F9 100%);
+  padding: 24rpx;
+  padding-bottom: 48rpx;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-lg);
+  gap: 32rpx;
 }
 
-/* 页面标题 */
-.page-title {
-  text-align: center;
-  margin-top: var(--spacing-lg);
-  margin-bottom: var(--spacing-sm);
+/* ===== 顶部品牌区域 ===== */
+.header-section {
+  background: linear-gradient(135deg, #0D9488 0%, #0F766E 50%, #115E59 100%);
+  border-radius: 32rpx;
+  padding: 40rpx 32rpx;
+  box-shadow: 0 8rpx 32rpx rgba(13, 148, 136, 0.25);
+  position: relative;
+  overflow: hidden;
 }
 
-.page-title h1 {
-  font-size: 44rpx;
-  font-weight: 600;
-  color: #333333;
-  margin-bottom: var(--spacing-xs);
+.header-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 300rpx;
+  height: 300rpx;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  border-radius: 50%;
 }
 
-.page-title p {
-  font-size: 24rpx;
-  color: #999999;
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.logo-icon-wrapper {
+  width: 72rpx;
+  height: 72rpx;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10rpx);
+}
+
+.logo-svg {
+  width: 40rpx;
+  height: 40rpx;
+  color: #FFFFFF;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.logo-title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 4rpx;
+}
+
+.logo-subtitle {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.8);
   letter-spacing: 2rpx;
 }
 
-/* 响应式布局 */
+.header-badge {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8rpx 16rpx;
+  border-radius: 24rpx;
+  backdrop-filter: blur(10rpx);
+}
+
+.badge-dot {
+  width: 12rpx;
+  height: 12rpx;
+  background: #34D399;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.badge-text {
+  font-size: 20rpx;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* 统计数据 */
+.header-stats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20rpx;
+  padding: 24rpx 0;
+  backdrop-filter: blur(10rpx);
+  position: relative;
+  z-index: 1;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.stat-label {
+  font-size: 20rpx;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.stat-divider {
+  width: 2rpx;
+  height: 48rpx;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ===== 区块标题样式 ===== */
+.section-header {
+  margin-bottom: 20rpx;
+}
+
+.section-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.title-line {
+  width: 6rpx;
+  height: 28rpx;
+  background: linear-gradient(180deg, #0D9488 0%, #14B8A6 100%);
+  border-radius: 4rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #0F172A;
+}
+
+/* ===== 快捷功能区 ===== */
+.quick-actions {
+  margin-top: 8rpx;
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20rpx;
+}
+
+.action-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+  padding: 24rpx 0;
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.action-item.primary {
+  background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%);
+  border: 2rpx solid rgba(13, 148, 136, 0.1);
+}
+
+.action-item:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+.action-icon-wrapper {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.primary-bg {
+  background: linear-gradient(135deg, #0D9488 0%, #14B8A6 100%);
+  box-shadow: 0 4rpx 16rpx rgba(13, 148, 136, 0.3);
+}
+
+.blue-bg {
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
+  box-shadow: 0 4rpx 16rpx rgba(59, 130, 246, 0.25);
+}
+
+.green-bg {
+  background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+  box-shadow: 0 4rpx 16rpx rgba(16, 185, 129, 0.25);
+}
+
+.orange-bg {
+  background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+  box-shadow: 0 4rpx 16rpx rgba(245, 158, 11, 0.25);
+}
+
+.action-icon {
+  width: 44rpx;
+  height: 44rpx;
+  color: #FFFFFF;
+}
+
+.action-name {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #1E293B;
+}
+
+.action-desc {
+  font-size: 18rpx;
+  color: #64748B;
+}
+
+/* ===== 系统公告区 ===== */
+.notice-section {
+  margin-top: 8rpx;
+}
+
+.carousel-card {
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+/* ===== 功能菜单区 ===== */
+.menu-section {
+  margin-top: 8rpx;
+}
+
+.menu-card {
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+/* ===== 底部版权 ===== */
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  padding: 32rpx 0;
+  margin-top: 16rpx;
+}
+
+.footer-text {
+  font-size: 22rpx;
+  color: #94A3B8;
+}
+
+.footer-version {
+  font-size: 20rpx;
+  color: #CBD5E1;
+}
+
+/* ===== 响应式适配 ===== */
 @media (max-width: 750rpx) {
-  .index-main {
-    padding: var(--spacing-sm);
+  .index-container {
+    padding: 20rpx;
+    gap: 24rpx;
   }
-  
-  .page-title h1 {
+
+  .header-section {
+    padding: 32rpx 24rpx;
+    border-radius: 24rpx;
+  }
+
+  .logo-title {
     font-size: 36rpx;
+  }
+
+  .stat-value {
+    font-size: 32rpx;
+  }
+
+  .action-grid {
+    gap: 16rpx;
+  }
+
+  .action-icon-wrapper {
+    width: 80rpx;
+    height: 80rpx;
+  }
+
+  .action-icon {
+    width: 40rpx;
+    height: 40rpx;
+  }
+
+  .action-name {
+    font-size: 22rpx;
+  }
+
+  .action-desc {
+    font-size: 16rpx;
+  }
+}
+
+/* 小屏幕适配 */
+@media (max-width: 375rpx) {
+  .action-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
