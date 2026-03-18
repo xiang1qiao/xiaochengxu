@@ -1,9 +1,44 @@
 <!--pages/img_list/img_list.wxml-->
-<view class="pages-main">
-  <view class="top-search">
+<view class="img-manage-container">
+  <!-- 顶部统计栏 -->
+  <view class="stats-bar">
+    <view class="stats-content">
+      <view class="stats-icon">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none">
+          <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="currentColor"/>
+        </svg>
+      </view>
+      <view class="stats-text">
+        <text class="stats-title">图片管理中心</text>
+        <text class="stats-desc">管理您的中药材检测图片</text>
+      </view>
+    </view>
+    <view class="stats-count">
+      <text class="count-num">{{total || 0}}</text>
+      <text class="count-label">总记录</text>
+    </view>
+  </view>
+
+  <!-- 搜索筛选区 -->
+  <view class="search-section">
+    <view class="section-header">
+      <view class="section-icon teal">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none">
+          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor"/>
+        </svg>
+      </view>
+      <text class="section-title">筛选条件</text>
+    </view>
+
     <view class="search-form">
-      <view class="form-item" wx:if="{{level == 10}}">
-        <view class="form-label">账号:</view>
+      <!-- 账号搜索（仅管理员） -->
+      <view class="form-row" wx:if="{{level == 10}}">
+        <view class="form-label">
+          <svg class="label-icon" viewBox="0 0 24 24" fill="none">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
+          </svg>
+          <text>账号</text>
+        </view>
         <input 
           class="form-input" 
           placeholder="搜索账号" 
@@ -11,9 +46,15 @@
           bindinput="onUsernameInput"
         />
       </view>
-      
-      <view class="form-item">
-        <view class="form-label">文件名:</view>
+
+      <!-- 文件名搜索 -->
+      <view class="form-row">
+        <view class="form-label">
+          <svg class="label-icon" viewBox="0 0 24 24" fill="none">
+            <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" fill="currentColor"/>
+          </svg>
+          <text>文件名</text>
+        </view>
         <input 
           class="form-input" 
           placeholder="搜索文件名" 
@@ -21,138 +62,217 @@
           bindinput="onFileNameInput"
         />
       </view>
-      
-      <view class="form-item">
-        <view class="form-label">上传时间:</view>
-        <picker 
-          mode="date" 
-          value="{{form.created_at_start}}" 
-          start="2000-01-01"
-  
-          bindchange="onStartDateChange"
-        >
-          <view class="date-picker">{{form.created_at_start || '开始日期'}}</view>
-        </picker>
-        <text class="date-separator">至</text>
-        <picker 
-          mode="date" 
-          value="{{form.created_at_end}}" 
-          start="2000-01-01"
-      
-          bindchange="onEndDateChange"
-        >
-          <view class="date-picker">{{form.created_at_end || '结束日期'}}</view>
-        </picker>
+
+      <!-- 时间筛选 -->
+      <view class="form-row">
+        <view class="form-label">
+          <svg class="label-icon" viewBox="0 0 24 24" fill="none">
+            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z" fill="currentColor"/>
+          </svg>
+          <text>上传时间</text>
+        </view>
+        <view class="date-range">
+          <picker 
+            mode="date" 
+            value="{{form.created_at_start}}" 
+            start="2000-01-01"
+            bindchange="onStartDateChange"
+          >
+            <view class="date-picker {{form.created_at_start ? 'active' : ''}}">
+              <text>{{form.created_at_start || '开始日期'}}</text>
+              <svg class="picker-icon" viewBox="0 0 24 24" fill="none">
+                <path d="M7 10l5 5 5-5z" fill="currentColor"/>
+              </svg>
+            </view>
+          </picker>
+          <text class="date-separator">至</text>
+          <picker 
+            mode="date" 
+            value="{{form.created_at_end}}" 
+            start="2000-01-01"
+            bindchange="onEndDateChange"
+          >
+            <view class="date-picker {{form.created_at_end ? 'active' : ''}}">
+              <text>{{form.created_at_end || '结束日期'}}</text>
+              <svg class="picker-icon" viewBox="0 0 24 24" fill="none">
+                <path d="M7 10l5 5 5-5z" fill="currentColor"/>
+              </svg>
+            </view>
+          </picker>
+        </view>
       </view>
-      
-      <view class="form-item">
-        <button class="search-btn" bindtap="onSearch">搜索</button>
+
+      <!-- 搜索按钮 -->
+      <view class="form-actions">
+        <button class="search-btn" bindtap="onSearch">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none">
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor"/>
+          </svg>
+          <text>搜索</text>
+        </button>
+        <button class="reset-btn" bindtap="onReset">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none">
+            <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" fill="currentColor"/>
+          </svg>
+          <text>重置</text>
+        </button>
       </view>
     </view>
-
-
   </view>
 
+  <!-- 图片列表 -->
+  <view class="list-section">
+    <view class="section-header">
+      <view class="section-icon blue">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none">
+          <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z" fill="currentColor"/>
+        </svg>
+      </view>
+      <text class="section-title">检测记录</text>
+      <text class="section-count">共 {{total}} 条</text>
+    </view>
 
-  <view class="card-list">
-    <checkbox-group bindchange="onSelectionChange">
-
- 
+    <!-- 数据卡片列表 -->
+    <view class="card-list">
       <view 
         class="data-card" 
         wx:for="{{dataList}}" 
         wx:key="id"
         data-item="{{item}}"
       >
+        <!-- 卡片头部 -->
         <view class="card-header">
-    
-          <view class="card-title">
-            <text class="filename">{{item.file_name}}</text>
-            <text class="username" wx:if="{{level == 10}}">({{item.username}})</text>
+          <view class="file-info">
+            <view class="file-icon">
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="none">
+                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="currentColor"/>
+              </svg>
+            </view>
+            <view class="file-meta">
+              <text class="filename">{{item.file_name}}</text>
+              <text class="username" wx:if="{{level == 10}}">{{item.username}}</text>
+            </view>
+          </view>
+          <view class="upload-time">{{item.CreatedAt}}</view>
+        </view>
+
+        <!-- 图片对比区 -->
+        <view class="image-comparison">
+          <view class="image-box" bindtap="previewImage" data-src="{{imgLinkGet + item.mid_raw}}">
+            <image 
+              wx:if="{{item.mid_raw}}" 
+              src="{{imgLinkGet + item.mid_raw}}" 
+              class="card-image"
+              mode="aspectFill"
+            />
+            <view wx:else class="image-placeholder">
+              <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none">
+                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="currentColor"/>
+              </svg>
+              <text>无原图</text>
+            </view>
+            <view class="image-label">原图</view>
+          </view>
+          
+          <view class="compare-arrow">
+            <svg class="arrow-icon" viewBox="0 0 24 24" fill="none">
+              <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" fill="currentColor"/>
+            </svg>
+          </view>
+          
+          <view class="image-box" bindtap="previewImage" data-src="{{imgLinkGet + item.mid_handle}}">
+            <image 
+              wx:if="{{item.mid_handle}}" 
+              src="{{imgLinkGet + item.mid_handle}}" 
+              class="card-image"
+              mode="aspectFill"
+            />
+            <view wx:else class="image-placeholder">
+              <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor"/>
+              </svg>
+              <text>待检测</text>
+            </view>
+            <view class="image-label">检测图</view>
           </view>
         </view>
 
-        <view class="card-content">
-    
-          <view class="card-row">
-            <text class="label">检测结果:</text>
-            <text class="value">{{item.item || '暂无'}}</text>
-          </view>
-
-   
-          <view class="image-comparison">
-            <view class="image-item">
-              <text class="image-label">原图</text>
-              <image 
-                wx:if="{{item.mid_raw}}" 
-                src="{{imgLinkGet + item.mid_raw}}" 
-                class="card-image"
-                mode="aspectFill"
-                bindtap="previewImage"
-                data-src="{{imgLinkGet + item.mid_raw}}"
-              />
-              <view wx:else class="image-placeholder">无图片</view>
-            </view>
-            
-            <view class="image-item">
-              <text class="image-label">检测图</text>
-              <image 
-                wx:if="{{item.mid_handle}}" 
-                src="{{imgLinkGet + item.mid_handle}}" 
-                class="card-image"
-                mode="aspectFill"
-                bindtap="previewImage"
-                data-src="{{imgLinkGet + item.mid_handle}}"
-              />
-              <view wx:else class="image-placeholder">无图片</view>
-            </view>
-          </view>
-
-       
-          <view class="card-row">
-            <text class="label">上传时间:</text>
-            <text class="value">{{item.CreatedAt}}</text>
+        <!-- 检测结果 -->
+        <view class="detection-result" wx:if="{{item.item}}">
+          <view class="result-tag">
+            <svg class="tag-icon" viewBox="0 0 24 24" fill="none">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/>
+            </svg>
+            <text class="result-text">{{item.item}}</text>
           </view>
         </view>
+        <view class="detection-result empty" wx:else>
+          <text class="no-result">暂无检测结果</text>
+        </view>
 
-
+        <!-- 操作按钮 -->
         <view class="card-actions">
-          <button class="action-btn detection-btn" bindtap="onDetection" data-item="{{item}}">
-            <text class="btn-icon">🔍</text>
-            重新检测
+          <button class="action-btn detect-btn" bindtap="onDetection" data-item="{{item}}">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor"/>
+            </svg>
+            <text>重新检测</text>
           </button>
           <button class="action-btn delete-btn" bindtap="onDelete" data-item="{{item}}">
-            <text class="btn-icon">🗑️</text>
-            删除
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none">
+              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" fill="currentColor"/>
+            </svg>
+            <text>删除</text>
           </button>
         </view>
       </view>
-    </checkbox-group>
 
-
-    <view wx:if="{{dataList.length === 0}}" class="empty-state">
-
-      <text class="empty-text">暂无数据</text>
+      <!-- 空状态 -->
+      <view wx:if="{{dataList.length === 0}}" class="empty-state">
+        <view class="empty-icon">
+          <svg class="icon-svg large" viewBox="0 0 24 24" fill="none">
+            <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="currentColor"/>
+          </svg>
+        </view>
+        <text class="empty-title">暂无图片记录</text>
+        <text class="empty-desc">上传图片进行检测后，记录将显示在这里</text>
+      </view>
     </view>
   </view>
 
-
-  <view class="pagination">
-
+  <!-- 分页控制 -->
+  <view class="pagination-section" wx:if="{{dataList.length > 0}}">
+    <view class="pagination-info">
+      <text>第 {{form.page}} 页</text>
+      <text class="divider">|</text>
+      <text>共 {{Math.ceil(total / form.pagesize)}} 页</text>
+    </view>
     <view class="pagination-controls">
       <button 
-        class="pagination-btn" 
+        class="page-btn {{form.page <= 1 ? 'disabled' : ''}}" 
         disabled="{{form.page <= 1}}"
         bindtap="prevPage"
-      >上一页</button>
-  
+      >
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/>
+        </svg>
+        <text>上一页</text>
+      </button>
       <button 
-        class="pagination-btn" 
+        class="page-btn {{form.page >= Math.ceil(total / form.pagesize) ? 'disabled' : ''}}" 
+        disabled="{{form.page >= Math.ceil(total / form.pagesize)}}"
         bindtap="nextPage"
-      >下一页</button>
+      >
+        <text>下一页</text>
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" fill="currentColor"/>
+        </svg>
+      </button>
     </view>
-
   </view>
 
- 
+  <!-- 底部版权 -->
+  <view class="footer">
+    <text class="footer-text">智检云 · 专业中药材检测系统</text>
+  </view>
 </view>

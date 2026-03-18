@@ -1,8 +1,5 @@
 import http from '../../utils/api';
-import {
-    formatTime
-} from '../../utils/util';
-
+import { formatTime } from '../../utils/util';
 
 Page({
     data: {
@@ -11,8 +8,6 @@ Page({
         total: 0,
         selectAll: false,
         selectedIds: [],
-
-
         form: {
             page: 1,
             pagesize: 10,
@@ -21,7 +16,6 @@ Page({
             created_at_start: '',
             created_at_end: ''
         },
-
         pageSizeOptions: ['10', '30', '50', '100'],
         imgLinkGet: http.imgLinkGet
     },
@@ -67,6 +61,23 @@ Page({
         this.dataLoad();
     },
 
+    // 重置筛选条件
+    onReset() {
+        this.setData({
+            'form.username': '',
+            'form.file_name': '',
+            'form.created_at_start': '',
+            'form.created_at_end': '',
+            'form.page': 1
+        });
+        this.dataLoad();
+        wx.showToast({
+            title: '已重置',
+            icon: 'success',
+            duration: 1500
+        });
+    },
+
     // 选择变化
     onSelectionChange(e) {
         const selectedIds = e.detail.value.filter(id => id !== 'all');
@@ -92,8 +103,9 @@ Page({
     onDetection(e) {
         const item = e.currentTarget.dataset.item;
         wx.showModal({
-            title: '提示',
-            content: '确定重新检测这张图片吗？',
+            title: '确认重新检测',
+            content: '确定要重新检测这张图片吗？',
+            confirmColor: '#0D9488',
             success: (res) => {
                 if (res.confirm) {
                     this.detection(item);
@@ -103,24 +115,25 @@ Page({
     },
 
     detection(row) {
-        const dic = {
-            mid_raw: row.mid_raw
-        };
+        wx.showLoading({ title: '检测中...' });
+        const dic = { mid_raw: row.mid_raw };
 
         http.apiImgDetectionPost(dic).then((res) => {
+            wx.hideLoading();
             if (res.code === 200) {
                 wx.showToast({
-                    title: res.msg,
+                    title: '检测完成',
                     icon: 'success'
                 });
                 this.dataLoad();
             } else {
                 wx.showToast({
-                    title: res.msg,
+                    title: res.msg || '检测失败',
                     icon: 'none'
                 });
             }
         }).catch(err => {
+            wx.hideLoading();
             wx.showToast({
                 title: '请求失败',
                 icon: 'none'
@@ -132,8 +145,9 @@ Page({
     onDelete(e) {
         const item = e.currentTarget.dataset.item;
         wx.showModal({
-            title: '提示',
-            content: '确定删除这条记录吗？',
+            title: '确认删除',
+            content: '删除后无法恢复，确定删除这条记录吗？',
+            confirmColor: '#DC2626',
             success: (res) => {
                 if (res.confirm) {
                     this.del_fun(item);
@@ -143,24 +157,25 @@ Page({
     },
 
     del_fun(row) {
-        const dic = {
-            id: row.id
-        };
+        wx.showLoading({ title: '删除中...' });
+        const dic = { id: row.id };
 
         http.apiImgListDel(dic).then((res) => {
+            wx.hideLoading();
             if (res.code === 200) {
                 wx.showToast({
-                    title: res.msg,
+                    title: '删除成功',
                     icon: 'success'
                 });
                 this.dataLoad();
             } else {
                 wx.showToast({
-                    title: res.msg,
+                    title: res.msg || '删除失败',
                     icon: 'none'
                 });
             }
         }).catch(err => {
+            wx.hideLoading();
             wx.showToast({
                 title: '删除失败',
                 icon: 'none'
@@ -168,27 +183,24 @@ Page({
         });
     },
 
-
     // 加载数据
     dataLoad() {
-        const params = {
-            ...this.data.form
-        };
+        wx.showLoading({ title: '加载中...' });
+        const params = { ...this.data.form };
 
         http.apiImgListGet(params).then((res) => {
+            wx.hideLoading();
             if (res.code === 200) {
                 const dataList = res.data.data.map(item => {
                     // 处理item字段，将Unicode编码转换为中文
                     let processedItem = item.item;
                     if (processedItem) {
                         try {
-                            // 尝试解析Unicode编码的字符串
                             const parsedItem = JSON.parse(processedItem);
                             if (Array.isArray(parsedItem)) {
                                 processedItem = parsedItem.join('、');
                             }
                         } catch (e) {
-                            // 如果解析失败，保持原始值
                             console.log('解析item字段失败:', e);
                         }
                     }
@@ -206,11 +218,12 @@ Page({
                 });
             } else {
                 wx.showToast({
-                    title: res.msg,
+                    title: res.msg || '加载失败',
                     icon: 'none'
                 });
             }
         }).catch(err => {
+            wx.hideLoading();
             wx.showToast({
                 title: '加载失败',
                 icon: 'none'
@@ -238,13 +251,13 @@ Page({
     },
 
     nextPage() {
-        let maxPage = Math.ceil(this.data.total / this.data.form.pagesize)
+        let maxPage = Math.ceil(this.data.total / this.data.form.pagesize);
         if (this.data.form.page >= maxPage) {
             wx.showToast({
-                title: "已经是最后一页了",
+                title: '已经是最后一页了',
                 icon: 'none'
             });
-            return
+            return;
         }
         this.setData({
             'form.page': this.data.form.page + 1
@@ -255,14 +268,61 @@ Page({
     // 图片预览
     previewImage(e) {
         const src = e.currentTarget.dataset.src;
+        if (!src) return;
         wx.previewImage({
             urls: [src],
             current: src
         });
     },
 
+    // 下拉刷新
+    onPullDownRefresh() {
+        this.setData({
+            'form.page': 1
+        });
+        this.dataLoad();
+        wx.stopPullDownRefresh();
+    },
 
+    // 触底加载更多
+    onReachBottom() {
+        let maxPage = Math.ceil(this.data.total / this.data.form.pagesize);
+        if (this.data.form.page < maxPage) {
+            this.setData({
+                'form.page': this.data.form.page + 1
+            });
+            this.loadMoreData();
+        }
+    },
 
+    // 加载更多数据
+    loadMoreData() {
+        const params = { ...this.data.form };
+        http.apiImgListGet(params).then((res) => {
+            if (res.code === 200) {
+                const newDataList = res.data.data.map(item => {
+                    let processedItem = item.item;
+                    if (processedItem) {
+                        try {
+                            const parsedItem = JSON.parse(processedItem);
+                            if (Array.isArray(parsedItem)) {
+                                processedItem = parsedItem.join('、');
+                            }
+                        } catch (e) {
+                            console.log('解析item字段失败:', e);
+                        }
+                    }
+                    return {
+                        ...item,
+                        item: processedItem,
+                        checked: this.data.selectedIds.includes(item.id)
+                    };
+                });
 
-
+                this.setData({
+                    dataList: [...this.data.dataList, ...newDataList]
+                });
+            }
+        });
+    }
 });

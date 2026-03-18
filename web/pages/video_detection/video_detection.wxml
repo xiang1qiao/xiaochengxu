@@ -1,77 +1,191 @@
-<view class="detection-main fade-in">
-    <!-- 上传视频卡片 -->
-    <view class="card upload-card">
-        <view class="card-header">
-            <text class="card-title">上传视频</text>
-            <text class="card-subtitle">请上传需要检测的中药材视频</text>
+<!--pages/video_detection/video_detection.wxml-->
+<view class="video-detection-container">
+  <!-- 顶部状态栏 -->
+  <view class="status-bar">
+    <view class="status-content">
+      <view class="status-icon {{isDetecting ? 'detecting' : ''}}">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none">
+          <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z" fill="currentColor"/>
+        </svg>
+      </view>
+      <view class="status-text">
+        <text class="status-title">{{isDetecting ? '视频检测中...' : '中药材视频检测'}}</text>
+        <text class="status-desc">{{isDetecting ? 'AI正在分析视频帧' : '上传视频，智能识别中药材'}}</text>
+      </view>
+    </view>
+    <view class="quick-stats">
+      <view class="quick-stat">
+        <text class="stat-num">{{detectionStats.todayCount || 0}}</text>
+        <text class="stat-label">今日检测</text>
+      </view>
+      <view class="quick-stat">
+        <text class="stat-num">{{detectionStats.totalCount || 0}}</text>
+        <text class="stat-label">累计检测</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 上传区域 -->
+  <view class="upload-section">
+    <view class="section-header">
+      <view class="section-icon teal">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
+        </svg>
+      </view>
+      <text class="section-title">上传检测视频</text>
+    </view>
+    
+    <view class="video-upload-area {{form.mid_raw || tempVideoUrl ? 'has-video' : ''}}">
+      <view wx:if="{{form.mid_raw || tempVideoUrl}}" class="video-wrapper">
+        <video 
+          src="{{form.mid_raw ? videoLinkGet + form.mid_raw : tempVideoUrl}}" 
+          controls="{{true}}" 
+          class="preview-video"
+          poster="{{form.mid_raw ? videoLinkGet + form.mid_raw + '?vframe/jpg/offset/0' : ''}}"
+        />
+        <view class="video-overlay">
+          <view class="overlay-btn" catchtap="chooseVideo">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none">
+              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/>
+            </svg>
+            <text>重新上传</text>
+          </view>
         </view>
-        <view class="video-div">
-            <view class="video-show-div">
-                <video wx:if="{{form.mid_raw}}" src="{{videoLinkGet + form.mid_raw}}" controls="{{true}}" mode="aspectFit" class="video-show-css" data-mid="{{form.mid_raw}}" />
-                <video wx:elif="{{tempVideoUrl}}" src="{{tempVideoUrl}}" controls="{{true}}" mode="aspectFit" class="video-show-css" />
-                <view wx:else class="placeholder" bindtap="chooseVideo">
-                    <view class="placeholder-icon">🎬</view>
-                    <text class="placeholder-text">点击上传视频</text>
-                </view>
-            </view>
-            <view class="up-btn-group">
-                <button class="btn btn-secondary" bindtap="chooseVideo" disabled="{{isUploading}}">{{isUploading ? '上传中...' : '选择视频'}}</button>
-            </view>
+      </view>
+      <view wx:else class="upload-placeholder" bindtap="chooseVideo">
+        <view class="upload-icon">
+          <svg class="icon-svg large" viewBox="0 0 24 24" fill="none">
+            <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z" fill="currentColor"/>
+          </svg>
         </view>
+        <text class="upload-text">点击上传中药材视频</text>
+        <text class="upload-hint">支持 MP4 格式，时长建议 10-60 秒</text>
+      </view>
+    </view>
+    
+    <view class="upload-actions" wx:if="{{form.mid_raw || tempVideoUrl}}">
+      <button class="action-btn secondary" bindtap="chooseVideo" disabled="{{isUploading}}">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
+        </svg>
+        <text>{{isUploading ? '上传中...' : '更换视频'}}</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 检测操作区 -->
+  <view class="action-section">
+    <button class="detect-btn {{!form.mid_raw || isDetecting ? 'disabled' : ''}}" 
+            bindtap="detectionVideo" 
+            disabled="{{!form.mid_raw || isDetecting}}"
+            loading="{{isDetecting}}">
+      <view class="btn-content">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor"/>
+        </svg>
+        <text>{{isDetecting ? 'AI检测中...' : '开始智能检测'}}</text>
+      </view>
+    </button>
+  </view>
+
+  <!-- 检测结果区 -->
+  <view class="result-section" wx:if="{{form.nameDic.length > 0 || form.mid_handle}}">
+    <view class="section-header">
+      <view class="section-icon green">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none">
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/>
+        </svg>
+      </view>
+      <text class="section-title">检测结果</text>
     </view>
 
-    <!-- 检测控制和结果卡片 -->
-    <view class="card detection-card">
-        <view class="card-header">
-            <text class="card-title">检测控制</text>
-        </view>
-        <view class="center-area">
-            <button class="btn btn-primary detection-btn" bindtap="detectionVideo" loading="{{isDetecting}}" disabled="{{!form.mid_raw || isDetecting}}">
-                {{isDetecting ? '检测中...' : '开始检测'}}
-            </button>
-
-            <!-- 检测结果 -->
-            <view wx:if="{{form.nameDic.length != 0}}" class="result-section">
-                <text class="section-title">检测结果</text>
-                <scroll-view scroll-y class="result-container">
-                    <block wx:for="{{form.nameDic}}" wx:for-item="item" wx:for-index="index" wx:key="index">
-                        <view class="result-item card-hover">
-                            <view class="result-item-header">
-                                <text class="result-type">{{item["类别"]}}</text>
-                                <text class="result-confidence">置信度: {{item["置信度"]}}</text>
-                            </view>
-                            <view class="result-item-body">
-                                <text class="result-label">目标位置:</text>
-                                <view class="coordinate">
-                                    <text>x1:{{item['坐标']['x1']}} y1:{{item['坐标']['y1']}}</text>
-                                    <text>x2:{{item['坐标']['x2']}} y2:{{item['坐标']['y2']}}</text>
-                                </view>
-                            </view>
-                        </view>
-                    </block>
-                </scroll-view>
-            </view>
-            <view wx:elif="{{!isDetecting}}" class="placeholder-result">检测结果信息</view>
-        </view>
+    <!-- 检测结果视频 -->
+    <view class="result-video-card" wx:if="{{form.mid_handle}}">
+      <view class="result-video-wrapper">
+        <video 
+          src="{{videoLinkGet + form.mid_handle}}" 
+          controls="{{true}}" 
+          class="result-video"
+          poster="{{videoLinkGet + form.mid_handle + '?vframe/jpg/offset/0'}}"
+        />
+      </view>
+      <view class="result-video-actions">
+        <button class="save-btn" bindtap="saveVideoToPhotosAlbum">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none">
+            <path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z" fill="currentColor"/>
+          </svg>
+          <text>保存结果视频</text>
+        </button>
+      </view>
     </view>
 
-    <!-- 检测结果视频卡片 -->
-    <view class="card result-card">
-        <view class="card-header">
-            <text class="card-title">检测结果</text>
-            <text class="card-subtitle">检测后的视频</text>
-        </view>
-        <view class="video-div">
-            <view class="video-show-div">
-                <video wx:if="{{form.mid_handle}}" src="{{videoLinkGet + form.mid_handle}}" controls="{{true}}" mode="aspectFit" class="video-show-css" data-mid="{{form.mid_handle}}" />
-                <view wx:else class="placeholder">
-                    <view class="placeholder-icon">📊</view>
-                    <text class="placeholder-text">检测后显示结果</text>
-                </view>
+    <!-- 检测详情列表 -->
+    <view class="result-list" wx:if="{{form.nameDic.length > 0}}">
+      <view class="result-item" wx:for="{{form.nameDic}}" wx:for-item="item" wx:for-index="index" wx:key="index">
+        <view class="result-header">
+          <view class="result-badge">{{index + 1}}</view>
+          <view class="result-info">
+            <text class="result-name">{{item['类别']}}</text>
+            <view class="confidence-bar">
+              <view class="confidence-fill" style="width: {{item['置信度']}}%"></view>
             </view>
-            <view class="up-btn-group">
-                <button class="btn btn-success" bindtap="saveVideoToPhotosAlbum" disabled="{{!form.mid_handle}}">保存到本地</button>
-            </view>
+          </view>
+          <view class="confidence-value">
+            <text class="value">{{item['置信度']}}</text>
+            <text class="unit">%</text>
+          </view>
         </view>
+        <view class="result-detail">
+          <view class="detail-row">
+            <text class="detail-label">目标位置</text>
+            <text class="detail-value">x1:{{item['坐标']['x1']}} y1:{{item['坐标']['y1']}} | x2:{{item['坐标']['x2']}} y2:{{item['坐标']['y2']}}</text>
+          </view>
+        </view>
+      </view>
     </view>
+  </view>
+
+  <!-- 使用提示 -->
+  <view class="tips-section" wx:if="{{!form.mid_raw && !tempVideoUrl}}">
+    <view class="section-header">
+      <view class="section-icon blue">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" fill="currentColor"/>
+        </svg>
+      </view>
+      <text class="section-title">检测说明</text>
+    </view>
+    <view class="tips-list">
+      <view class="tip-item">
+        <view class="tip-icon">
+          <svg class="icon-svg small" viewBox="0 0 24 24" fill="none">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/>
+          </svg>
+        </view>
+        <text class="tip-text">支持常见中药材视频识别</text>
+      </view>
+      <view class="tip-item">
+        <view class="tip-icon">
+          <svg class="icon-svg small" viewBox="0 0 24 24" fill="none">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/>
+          </svg>
+        </view>
+        <text class="tip-text">建议拍摄稳定、光线充足的视频</text>
+      </view>
+      <view class="tip-item">
+        <view class="tip-icon">
+          <svg class="icon-svg small" viewBox="0 0 24 24" fill="none">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/>
+          </svg>
+        </view>
+        <text class="tip-text">AI将逐帧分析并标注药材位置</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部版权 -->
+  <view class="footer">
+    <text class="footer-text">智检云 · 专业中药材检测系统</text>
+  </view>
 </view>
